@@ -109,3 +109,58 @@ public class MainApplication {
 
 ### 自动装配
 
+
+
+# Redis
+
+为什么快？
+
+>内存操作
+>
+>IO多路复用机制
+>
+>文件事件处理器单线程避免上下文切换
+
+五种普通数据结构
+
+> String(SDS)	List	Hash	Set	Sorted Set
+
+问题
+
+缓存穿透->布隆过滤器
+
+缓存击穿->互斥锁
+
+缓存雪崩->随机失效时间
+
+
+
+# Nginx
+
+多进程模型
+
+> 一个Master进程，多个Worker进程
+
+### IO多路复用
+
+select poll epoll
+
+
+
+# MQ
+
+异步、削峰、降低耦合性
+
+AMQP协议
+
+生产者消费者模型/发布订阅模型(Topic)
+
+分布式事务
+
+
+
+# Zookeeper
+
+服务于分布式的文件系统
+
+数据结构
