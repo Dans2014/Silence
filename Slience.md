@@ -113,7 +113,11 @@ com.lcy.MyException: This is a test Exception
 
 
 
+### 泛型
 
+泛型类实际上是Object
+
+泛型的继承关系：可以把`ArrayList`向上转型为`List`（`T`不能变！），但不能把`ArrayList`向上转型为`ArrayList`（`T`不能变成父类）
 
 
 
