@@ -62,9 +62,62 @@ for(Class c: cls){
 
 ### 异常
 
+异常继承关系如下：
+
+![](D:\Silence\assets\Throwable.PNG)
+
+自定义异常
+
+```java
+public class MyException extends Exception {
+    public MyException() {
+    }
+    public MyException(String str){
+        super(str);
+    }
+}
+```
+
+抛出及捕获
+
+```java
+public static void Func1() throws MyException {
+	throw new MyException("This is a test Exception");
+}
+
+public static void Func2() throws MyException {
+	Func1();
+}
+
+public static void main(String[] args) {
+    try{
+    	Func2();
+    }catch (MyException e){
+    	e.printStackTrace();
+    }
+}
+```
+
+输出
+
+```
+com.lcy.MyException: This is a test Exception
+	at com.lcy.MyException.Func1(MyException.java:11)
+	at com.lcy.MyException.Func2(MyException.java:15)
+	at com.lcy.MyException.main(MyException.java:20)
+```
+
 
 
 ### 注解
+
+
+
+
+
+
+
+
 
 
 
