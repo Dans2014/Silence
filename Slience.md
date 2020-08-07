@@ -121,6 +121,24 @@ com.lcy.MyException: This is a test Exception
 
 
 
+### 网络
+
+
+
+### 并发
+
+
+
+### 锁
+
+
+
+
+
+# JVM
+
+
+
 
 
 
@@ -164,7 +182,69 @@ public class MainApplication {
 }
 ```
 
+
+
+### 文件上传下载
+
+上传
+
+```java
+@RequestMapping("/upload")
+public String httpUpload(@RequestParam("files")MultipartFile files[]){
+    System.out.println(123);
+    for(int i=0;i<files.length;i++){
+        String fileName = files[i].getOriginalFilename();  // 文件名
+        File dest = new File(filePath+fileName);
+        System.out.println(dest);
+        if (!dest.getParentFile().exists()) {
+            dest.getParentFile().mkdirs();
+        }
+        try {
+            files[i].transferTo(dest);
+        } catch (Exception e) {
+            return "failed";
+        }
+    }
+    return "success";
+}
+```
+
+下载
+
+```java
+@GetMapping("/download")
+public String fileDownLoad(HttpServletResponse response, @RequestParam("fileName") String fileName){
+    File file = new File(filePath+fileName);
+    if(!file.exists()){
+        return "下载文件不存在";
+    }
+    response.reset();
+    response.setContentType("application/octet-stream");
+    response.setCharacterEncoding("utf-8");
+    response.setContentLength((int) file.length());
+    response.setHeader("Content-Disposition", "attachment;filename="+fileName );
+
+    try(BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));) {
+        byte[] buff = new byte[1024];
+        OutputStream os  = response.getOutputStream();
+        int i = 0;
+        while ((i = bis.read(buff)) != -1) {
+            os.write(buff, 0, i);
+            os.flush();
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+        return "下载失败";
+    }
+    return "下载成功";
+}
+```
+
+
+
 ### 自动装配
+
+
 
 
 
@@ -198,6 +278,10 @@ public class MainApplication {
 
 > 一个Master进程，多个Worker进程
 
+### 配置文件
+
+
+
 ### IO多路复用
 
 select poll epoll
@@ -221,3 +305,10 @@ AMQP协议
 服务于分布式的文件系统
 
 数据结构
+
+
+
+
+
+# 数据结构
+
