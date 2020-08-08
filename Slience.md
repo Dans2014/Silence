@@ -242,7 +242,30 @@ public String fileDownLoad(HttpServletResponse response, @RequestParam("fileName
 
 
 
+### 约定大于配置
+
+父依赖`spring-boot-starter-parent`的父依赖`spring-boot-dependencies`放了很多依赖及版本号，故项目pom中引入一些依赖无需指定版本号
+
+`spring-boot-starter-parent`中还指定了配置文件等资源库，故项目启动会读取`${basedir}/src/main/resources`路径下`application.yml`等配置文件
+
+```xml
+<resource>
+  <directory>${basedir}/src/main/resources</directory>
+  <excludes>
+    <exclude>**/application*.yml</exclude>
+    <exclude>**/application*.yaml</exclude>
+    <exclude>**/application*.properties</exclude>
+  </excludes>
+</resource>
+```
+
+### 启动器
+
+
+
 ### 自动装配
+
+主函数注解`@SpringBootApplication`
 
 
 
