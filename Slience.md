@@ -133,13 +133,185 @@ com.lcy.MyException: This is a test Exception
 
 
 
+### 网络
+
+```java
+//TCPClient
+Socket s = new Socket("127.0.0.1", 9001);
+OutputStream out = s.getOutputStream();
+out.write("from client".getBytes());
+
+InputStream in = s.getInputStream();
+byte[] data = new byte[1024];
+int len = in.read(data);
+System.out.println(new String(data, 0, len));
+
+s.close();
+```
+
+```java
+ServerSocket ss = new ServerSocket(9001);
+Socket s = ss.accept();
+InputStream in = s.getInputStream();
+byte[] data = new byte[1024];
+int len = in.read(data);
+System.out.println(new String(data, 0, len));
+
+OutputStream out = s.getOutputStream();
+out.write("accepted by serve".getBytes());
+
+s.close();
+ss.close();
+```
+
+
+
+# I/O
+
+### select
+
+![](D:\Silence\assets\select_model.png)
+
+> 每次调用select，都需要将fd（事件/连接）集合从用户态拷贝至内核态，fd很多时开销很大
+>
+> 同时每次调用select都需要在内核遍历传进来的所有fd
+>
+> select支持的文件描述符数量只有1024
+
+### poll
+
+> 原理和select一样，由于底层数据结构是链表，poll可以支持大于1024个文件描述
+
+### epoll
+
+> event poll，线程安全
+>
+> 内部使用mmap共享用户态和内核态部分空间（简易文件系统/B+树），避免数据来回拷贝
+>
+> 基于事件驱动，epoll_create建立一个epoll对象，调用epoll_ctl向epoll对象中注册事件及回调函数，epoll_wait收集发生事件并回调
+
+### I/O多路复用
+
+> 可以监听多个描述符的读/写等事件，一旦某个描述符就绪（一般是读或者写事件发生了），就能够将发生的 事件通知给关心的应用程序去处理该事件。
+
+**网卡接收数据：**通过硬件传输，网卡接收的数据写入内存中，操作系统就可以去读。
+
+**CPU中断：**数据写入内存后网卡向CPU发中断信号，操作系统便知道有新数据到来，通过网卡中断程序去处理数据
+
+**进程调度：**进程阻塞不占用cpu资源
+
+
+
+# Netty
+
+### BIO
+
+Blocking I/O
+
+经典线程池模型
+
+```java
+
+{
+    ExecutorService executor = Executors.newFixedThreadPool(100);
+    ServerSocket ss = new ServerSocket(9001);
+    while(!Thread.currentThread().isInterrupted()){
+        Socket socket = ss.accept();
+        executor.submit(new ConnectIOHandler(socket));
+    }
+}
+
+class ConnectIOHandler extends Thread{
+    private Socket socket;
+    public ConnectIOHandler(Socket socket){
+        this.socket = socket;
+    }
+    public void run(){
+        while(!Thread.currentThread().isInterrupted()&&!socket.isClosed())
+            //处理逻辑
+    }
+}
+```
+
+
+
+### NIO
+
+系统I/O操作分为等待就绪和操作
+
+BIO一直阻塞（我要读），NIO轮询非阻塞（我可以读了），AIO数据从网卡到网卡也是非阻塞的（读好了）
+
+传统HTTP服务器原理：
+
+> 1、创建ServerSocket，监听一个端口
+>
+> 2、客户端请求服务器
+>
+> 3、服务器Accept，获得来自客户端Socket连接对象
+>
+> 4、启动一个新线程处理连接：
+>
+> > > 读Socket字节流	解码协议得到Http请求对象	处理Http结果封装成HttpResponse对象	编码协议序列化字节流写Socket返回给客户端
+
 
 
 # JVM
 
 
 
+# JAVA WEB
 
+### Tomcat
+
+> 免费开源轻量级应用服务器
+
+J2EE 13种规范只是实现了Servlet/JSP（WebLogic/JBOSS完全支持），故又称Servlet容器
+
+### Servlet
+
+
+
+### Tips
+
+TCP/IP
+
+> 传输层的网络协议族（三次握手四次挥手）
+
+SOCKET
+
+> 是操作系统实现的TCP/IP协议族的接口，实现socket/bind/listen/accept/connect等功能
+
+RPC	(Remote Procedure Call) 即远程过程调用
+
+> 应用间通信最基础的方法是基于TCP/IP通过Socket编程实现，因其难度较大衍生出的解决应用间通信的框架
+
+HTTP
+
+>基于TCP/IP之上有特殊规范要求的应用层协议
+
+Webservice
+
+> 原指所有基于web的服务器
+
+SOAP(Simple Object Access Protocol) 简单对象访问协议
+
+> 基于XML的轻量协议，约定使用WSDL (Web Service Description Language)服务描述语言，传输协议依可以是HTTP/SMTP
+
+gRPC
+
+> 使用Protocol Buffers（压缩率高的序列化协议），传输使用基于HTTP2.0的Netty
+
+Rest
+
+> 一种面向资源、无状态的架构风格，基于HTTP的文本类（JSON）传输方式
+
+web服务器
+
+> Nginx/Apache/IIS
+
+应用服务器
+
+> Tomcat/WebLogic/JBOSS
 
 
 
@@ -334,4 +506,17 @@ AMQP协议
 
 
 # 数据结构
+
+
+
+# 计算机网络
+
+五层网络模型
+
+| 应用层     |
+| ---------- |
+| 传输层     |
+| 网络层     |
+| 数据链路层 |
+| 物理层     |
 
