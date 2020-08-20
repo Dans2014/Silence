@@ -16,7 +16,7 @@
 
 ### java
 
-```
+```java
 String a = "hello world";
 String b = "hello world";
 
@@ -24,6 +24,22 @@ System.out.println(a.equals(b));
 System.out.println(a==b);
 System.out.println(new String("hello world")==new String("hello world"));
 System.out.println(new String("hello world").equals(new String("hello world")));
+
+public static boolean judge(String s){
+    Stack<Character> stack = new Stack<>();
+    for(int i=0;i<s.length();i++){
+        if(s.charAt(i)=='(' || s.charAt(i)=='[' || s.charAt(i)=='{')
+            stack.push(s.charAt(i));
+        else
+            if(stack.empty())
+                return false;
+        if((stack.peek()=='(' && s.charAt(i)==')') || (stack.peek()=='[' && s.charAt(i)==']') || (stack.peek()=='{' && s.charAt(i)=='}'))
+            stack.pop();
+    }
+    if(!stack.empty())
+        return false;
+    return true;
+}
 ```
 
 5'	上述分别输出什么

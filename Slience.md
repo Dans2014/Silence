@@ -339,6 +339,20 @@ BIO一直阻塞（我要读），NIO轮询非阻塞（我可以读了），AIO�
 
 # JVM
 
+内存模型：堆、方法区、栈
+
+堆模型：老年代、青年代（Eden，From Survivor，To Survivor 8:1:1）
+
+### GC
+
+判断对象存活：引用计数、可达性分析
+
+GC算法：标记-清除法，复制算法，标记压缩算法，分代收集算法
+
+GC收集器：
+
+MinorGC FullGC
+
 
 
 # JAVA WEB
@@ -522,6 +536,30 @@ public String fileDownLoad(HttpServletResponse response, @RequestParam("fileName
 主函数注解`@SpringBootApplication`
 
 
+
+
+
+# SpringCloud
+
+### CAP
+
+> C（Consistency）：数据一致性
+>
+> A（Availability）：可用性
+>
+> P（Partition Tolerance）：分区容错性
+
+### Eureka
+
+> AP原则
+
+### Zookeeper
+
+> CP原则
+
+### ElasticSearch
+
+> 倒排索引，索引（数据库），类型（表），字段，文档（行）
 
 
 
