@@ -246,6 +246,14 @@ s.close();
 ss.close();
 ```
 
+### JDBC
+
+> Java Database Connectivity，是标准的Java API，是一套客户端程序与数据库交互的规范。
+>
+> JDBC提供了一套通过Java操纵数据库的完整接口
+
+
+
 
 
 # I/O
@@ -450,6 +458,8 @@ public class MainApplication {
 }
 ```
 
+### 数据库连接
+
 
 
 ### 文件上传下载
@@ -644,3 +654,14 @@ AMQP协议
 | 数据链路层 |
 | 物理层     |
 
+
+
+# 设计模式
+
+# 手写Mybatis
+
+# 手写Tomcat
+
+# 手写Springframework
+
+# 手写JVM
